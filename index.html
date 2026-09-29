@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkeLAM — Skeleton-Grounded Latent Action Model</title>
+  <meta name="description" content="SkeLAM learns skeleton-grounded latent actions for controllable robot world models. Explore the method, results, and visual comparisons.">
+  <link rel="canonical" href="https://aopolin-lv.github.io/SkeLAM/">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='white'/%3E%3Ctext x='8' y='26' font-family='Georgia,serif' font-size='30' fill='%23222'%3ES%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#content">Skip to content</a>
+<main id="content">
+  <header class="paper-header container" id="top">
+    <h1>Skeleton-Grounded Latent Action Model<br class="title-break"> for Robot World Models</h1>
+<div class="authors"><span>Qi Lv<sup>1,2</sup></span><b>·</b><span>Jiayi Lin<sup>1,3</sup></span><b>·</b><span>Yuxin Jiang<sup>2</sup></span><b>·</b><span>Jianzong Wang<sup>3</sup></span><b>·</b><span>Xiang Deng<sup>1</sup></span><b>·</b><span>Mike Shou Zheng<sup>2,✉</sup></span></div>
+<div class="affiliations"><span><sup>1</sup> HIT (Shenzhen)</span><span><sup>2</sup> Show Lab, NUS</span><span><sup>3</sup> Ping An Tech</span></div>
+    <div class="paper-links"><a class="paper-download" href="assets/SkeLAM.pdf?v=18" target="_blank" rel="noopener">Paper <span>(PDF)</span></a><a href="#video">Video</a><a href="#citation">BibTeX</a></div>
+    <nav class="contents" aria-label="Page sections"><a href="#abstract">Abstract</a><a href="#overview">Method</a><a href="#results">Results</a><a href="#visuals">Visualizations</a></nav>
+  </header>
+  <section class="container intro-section" id="video" aria-label="Video introduction">
+    <figure class="video-figure intro-video">
+      <video autoplay muted loop controls playsinline preload="auto" poster="assets/skelam-introduction-v11-poster.jpg" width="1920" height="1080" aria-label="SkeLAM introduction with English narration and subtitles">
+        <source src="assets/skelam-introduction-v11.mp4" type="video/mp4">
+        Your browser does not support embedded video. <a href="assets/skelam-introduction-v11.mp4">Download the introduction</a>.
+      </video>
+    </figure>
+  </section>
+  <section class="section container abstract-section" id="abstract">
+    <h2>Abstract</h2><p>Robot world models simulate how environments evolve in response to robot actions. Latent action models enable learning dynamics from videos by encoding visual transitions as proxy actions. However, reconstruction-driven latent actions mix robot motion with object responses and other scene changes, complicating their correspondence with robot controls. We propose <strong>SkeLAM</strong>, a skeleton-guided latent action model for controllable robot world modeling. SkeLAM decomposes latent actions into a kinematic component grounded by robot skeleton supervision and a residual component retaining complementary visual dynamics. Cross-modal swap reconstruction encourages RGB-derived and skeleton-derived kinematic representations to be interchangeable during video reconstruction. The world model incorporates both components through separate conditioning pathways, while branch dropout reduces its dependence on future-derived residual information. A lightweight adapter maps robot actions to the kinematic space, and subsequent world-model fine-tuning adapts generation to these predicted conditions. At inference, the model generates future observations from the current observation and robot actions. On DROID, SkeLAM reduces end-effector ADE by 19.5% and LPIPS by 11.1% compared with DreamDojo. Motion probing supports kinematic specialization, while qualitative results demonstrate zero-shot human-to-robot motion transfer in generated rollouts. Policy evaluation shows agreement between predicted success rates and those measured in real robot executions.</p>
+  </section>
+  <section class="section container" id="overview">
+    <h2>Method</h2>
+<figure class="figure-plate"><button class="figure-zoom" type="button" aria-label="Enlarge the SkeLAM framework"><img src="assets/overview.webp" width="2600" height="1499" alt="SkeLAM overview: skeleton-grounded latent learning, separate kinematic and residual world-model conditioning, and action-conditioned inference."><span class="zoom-label" aria-hidden="true">Enlarge</span></button><figcaption><strong>SkeLAM overview.</strong> Cross-modal swaps align skeleton and RGB motion representations. Separate latent pathways condition the world model; an action adapter makes the learned motion representation usable with robot actions.</figcaption></figure>
+    <div class="reading-width">
+      <p><strong>Skeleton-grounded latent actions.</strong> SkeLAM encodes RGB transitions into a 32D kinematic latent and a 32D residual latent. Paired robot skeletons supervise the kinematic component; cross-modal swap reconstruction encourages RGB and skeleton motion representations to be interchangeable.</p>
+      <p><strong>World-model conditioning.</strong> The two components use separate projection pathways in Cosmos-Predict2.5-2B. Branch dropout reduces reliance on residual information derived from future observations.</p>
+      <p><strong>Action adaptation.</strong> A lightweight adapter maps robot actions to the kinematic space. At inference, the model generates future observations from the current RGB image and robot actions, with the residual set to zero.</p>
+    </div>
+  </section>
+  <section class="section container" id="results">
+    <h2>Experimental Results</h2>
+    <p class="section-lead">Trained on <strong>only ~10 hours of robot data</strong> with a pretrained world-model backbone, SkeLAM ranks first on seven of eight reported DROID metrics among action-conditioned models. Ctrl-World and OSCAR achieve higher direction F1.</p>
+    <div class="result-context"><h3>DROID</h3><span>400 clips · 1 observed + 12 future frames · 480 × 640</span></div>
+<div class="table-scroll" tabindex="0" role="region" aria-label="DROID results, scroll horizontally on small screens"><table><caption>DROID · selected visual and motion metrics</caption><thead><tr><th scope="col">Method</th><th scope="col">Control</th><th scope="col">PSNR ↑<small>dB</small></th><th scope="col">SSIM ↑</th><th scope="col">LPIPS ↓</th><th scope="col">ADE ↓<small>pixels</small></th><th scope="col">Direction F1 ↑</th></tr></thead><tbody><tr class="reference"><th scope="row">TesserAct</th><td>Text reference</td><td>15.08</td><td>0.7400</td><td>0.2561</td><td>83.76</td><td>0.2950</td></tr><tr class="reference"><th scope="row">GE-Base</th><td>Text reference</td><td>12.51</td><td>0.4530</td><td>0.5864</td><td>55.30</td><td>0.3006</td></tr><tr class=""><th scope="row">IRASim</th><td>Action embedding</td><td>11.55</td><td>0.4137</td><td>0.5993</td><td>67.11</td><td>0.2616</td></tr><tr class=""><th scope="row">Ctrl-World</th><td>Action embedding</td><td>16.34</td><td>0.5910</td><td>0.4029</td><td>42.96</td><td>0.5888</td></tr><tr class=""><th scope="row">Cosmos-Predict2.5</th><td>Action embedding</td><td>11.51</td><td>0.4209</td><td>0.6018</td><td>60.76</td><td>0.2375</td></tr><tr class=""><th scope="row">Cosmos3</th><td>Action embedding</td><td>16.98</td><td>0.7630</td><td>0.2186</td><td>67.23</td><td>0.3278</td></tr><tr class=""><th scope="row">EnerVerse-AC</th><td>Action map</td><td>14.13</td><td>0.5157</td><td>0.4139</td><td>59.63</td><td>0.2433</td></tr><tr class=""><th scope="row">GE-Sim</th><td>Action map</td><td>12.53</td><td>0.4550</td><td>0.4950</td><td>55.57</td><td>0.2799</td></tr><tr class=""><th scope="row">OSCAR</th><td>Skeleton</td><td>12.57</td><td>0.4471</td><td>0.4788</td><td>43.74</td><td>0.5810</td></tr><tr class=""><th scope="row">DreamDojo†</th><td>Robot action</td><td>18.91</td><td>0.8057</td><td>0.1473</td><td>51.11</td><td>0.4989</td></tr><tr class=""><th scope="row">CD-LAM†</th><td>Action → latent</td><td>18.34</td><td>0.7910</td><td>0.1586</td><td>53.90</td><td>0.4903</td></tr><tr class="ours"><th scope="row">SkeLAM (ours)</th><td>Action → kinematic</td><td>19.35</td><td>0.8340</td><td>0.1310</td><td>41.15</td><td>0.5465</td></tr></tbody></table></div>
+<p class="result-reading"><strong>Compared with DreamDojo:</strong> ADE falls from 51.11 to 41.15 pixels; LPIPS falls from 0.1473 to 0.1310. Lower values indicate closer agreement with the reference.</p>
+<p class="table-note">↑ Higher is better · ↓ Lower is better. Text-conditioned models are visual references. † Large-scale interaction pretraining. Selected metrics are shown here; see the <a href="assets/SkeLAM.pdf?v=18" target="_blank" rel="noopener">paper and appendix ↗</a> for all metrics, coverage, and protocols.</p>
+  </section>
+    <section class="section container" id="visuals">
+      <h2>Qualitative Results</h2>
+      <p class="section-lead">Ground-truth and generated observations at selected time steps. The overlaid trajectories indicate end-effector motion; the images also show changes in gripper geometry and scene appearance.</p>
+      
+      <figure class="video-figure">
+        <video autoplay muted loop controls playsinline preload="auto" poster="assets/generated-video-poster.jpg?v=11" width="2004" height="1080" aria-label="Action-conditioned video generation across four scenes">
+          <source src="assets/generated-video.mp4?v=11" type="video/mp4">
+          Your browser does not support embedded video. <a href="assets/generated-video.mp4?v=11">Download the video</a>.
+        </video>
+        <figcaption><strong>Action-conditioned video generation.</strong> Four scenes comparing ground truth and SkeLAM with DreamDojo, Cosmos-Predict2.5, OSCAR, and Ctrl-World.</figcaption>
+      </figure>
+      <h3 class="subsection-heading">Frame comparisons</h3>
+<div class="tab-group" data-tabs>
+        <div class="tab-bar" role="tablist" aria-label="Comparison scene" hidden><button id="tab-main" role="tab" aria-controls="panel-main" aria-selected="true">Main comparison</button><button id="tab-tabletop" role="tab" aria-controls="panel-tabletop" aria-selected="false" tabindex="-1">Tabletop scene</button><button id="tab-kitchen" role="tab" aria-controls="panel-kitchen" aria-selected="false" tabindex="-1">Kitchen scene</button></div>
+        <div id="panel-main" class="tab-panel" role="tabpanel" aria-labelledby="tab-main" tabindex="0">
+<figure class="figure-plate "><button class="figure-zoom" type="button" aria-label="Enlarge the main frame-by-frame comparison"><img src="assets/comparison-main.webp?v=11" width="2600" height="1395" loading="lazy" decoding="async" alt="the main frame-by-frame comparison"><span class="zoom-label" aria-hidden="true">Enlarge</span></button><figcaption><strong>Main comparison.</strong> SkeLAM more closely follows the curved reference trajectory while retaining the tabletop layout. Local gripper errors remain. Markers and curves visualize end-effector positions and motion.</figcaption></figure>
+        </div><div id="panel-tabletop" class="tab-panel" role="tabpanel" aria-labelledby="tab-tabletop" tabindex="0">
+<figure class="figure-plate "><button class="figure-zoom" type="button" aria-label="Enlarge the additional tabletop comparison"><img src="assets/comparison-tabletop.webp?v=11" width="2600" height="1396" loading="lazy" decoding="async" alt="the additional tabletop comparison"><span class="zoom-label" aria-hidden="true">Enlarge</span></button><figcaption><strong>Additional tabletop scene.</strong> Ground-truth and generated frames compare end-effector motion, object geometry, and scene appearance across time.</figcaption></figure>
+        </div><div id="panel-kitchen" class="tab-panel" role="tabpanel" aria-labelledby="tab-kitchen" tabindex="0">
+<figure class="figure-plate "><button class="figure-zoom" type="button" aria-label="Enlarge the additional kitchen comparison"><img src="assets/comparison-kitchen.webp?v=11" width="2600" height="1396" loading="lazy" decoding="async" alt="the additional kitchen comparison"><span class="zoom-label" aria-hidden="true">Enlarge</span></button><figcaption><strong>Additional kitchen scene.</strong> The sequence shows the initial observation and three later time steps. Final-frame overlays make motion differences easier to inspect.</figcaption></figure>
+        </div>
+      </div>
+      <p class="figure-note">Click any figure to view it at full resolution.</p>
+    </section>  <section class="section container" id="transfer">
+    <h2>Zero-Shot Human-to-Robot Motion Transfer</h2>
+    <p class="section-lead">After training on <strong>~10 hours of robot data</strong>, SkeLAM transfers human hand motions to generated robot rollouts <strong>zero-shot, with no additional fine-tuning</strong>. With all parameters frozen, the RGB encoder extracts latent actions from human demonstrations in UniSkill; these latents condition a robot rollout from its own initial observation.</p>
+
+    <figure class="video-figure transfer-video">
+      <video autoplay muted loop controls playsinline preload="auto" poster="assets/human-to-robot-poster.jpg" width="960" height="1050" aria-label="Human-to-robot motion transfer with five human demonstration prompts">
+        <source src="assets/human-to-robot.mp4" type="video/mp4">
+        Your browser does not support embedded video. <a href="assets/human-to-robot.mp4">Download the video</a>.
+      </video>
+      <figcaption><strong>Human-to-robot motion transfer.</strong> Five motion prompts, with human demonstrations on the left, SkeLAM in the middle, and DreamDojo on the right.</figcaption>
+    </figure>
+    <h3 class="subsection-heading">Selected frames</h3>
+<figure class="figure-plate "><button class="figure-zoom" type="button" aria-label="Enlarge the human-to-robot motion-transfer examples"><img src="assets/human-transfer.webp" width="2600" height="806" loading="lazy" decoding="async" alt="the human-to-robot motion-transfer examples"><span class="zoom-label" aria-hidden="true">Enlarge</span></button><figcaption><strong>Two zero-shot examples.</strong> A towel-pushing prompt elicits a downward reach; a tissue-pulling prompt elicits upward motion. Markers indicate end-effector positions.</figcaption></figure>
+    <p class="scope-note">These examples provide qualitative evidence of motion correspondence across embodiments. They do not establish task completion or broad transfer performance.</p>
+  </section>
+
+  <section class="section container" id="policy">
+    <h2>Open-Loop Policy Evaluation</h2>
+    <div class="policy-layout"><div>
+      <p>We evaluate seven policies across 15 RoboArena sessions (105 episodes). Both world models receive the same initial observations and recorded actions. Human annotators label success in the generated rollouts for comparison with real executions.</p>
+      <p>SkeLAM achieves 63.02% balanced accuracy and 33.33% success recall. Policy-level Spearman correlation is 0.5347, and success-rate MAE decreases from 7.62 to 4.76 percentage points compared with Cosmos-Predict2.5.</p>
+      <p class="scope-note">The real episodes contain 9 successes and 96 failures. These results concern recorded-action replay; closed-loop policy evaluation remains future work.</p>
+    </div>
+<figure class="figure-plate policy-figure"><button class="figure-zoom" type="button" aria-label="Enlarge the policy success-rate agreement plot"><img src="assets/policy-agreement.webp" width="2390" height="2600" loading="lazy" decoding="async" alt="the policy success-rate agreement plot"><span class="zoom-label" aria-hidden="true">Enlarge</span></button><figcaption><strong>Policy-level agreement.</strong> Each point represents a policy; the dashed diagonal indicates perfect agreement with real success rates.</figcaption></figure>
+    </div>
+  </section>
+  <section class="section container citation-section" id="citation">
+    <div class="citation-heading"><div><h2>BibTeX</h2></div><button class="button secondary" id="copy-citation" type="button" hidden>Copy BibTeX</button></div>
+    <pre tabindex="0" aria-label="BibTeX citation"><code id="bibtex">@misc{lv2026skelam,
+  title  = {Skeleton-Grounded Latent Action Model for Robot World Models},
+  author = {Qi Lv and Jiayi Lin and Yuxin Jiang and Jianzong Wang
+            and Xiang Deng and {Mike Shou Zheng}},
+  year   = {2026}
+}</code></pre>
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+</main>
+<footer class="container"><span>SkeLAM · 2026</span><a href="assets/SkeLAM.pdf?v=18" target="_blank" rel="noopener">Paper PDF</a></footer>
+<dialog id="figure-dialog" aria-label="Enlarged research figure"><div class="dialog-toolbar"><p id="dialog-title">Research figure</p><button type="button" id="close-figure" aria-label="Close enlarged figure">Close <span aria-hidden="true">×</span></button></div><div class="dialog-canvas"><img id="dialog-image" alt=""></div><p class="dialog-note">Scroll to inspect the full-resolution figure. Press Esc to close.</p></dialog>
+<script src="script.js" defer></script>
+</body>
+</html>
