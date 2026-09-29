@@ -21,6 +21,6 @@ Run `python3 -m http.server 4173 --bind 127.0.0.1` from this directory and open 
 - `script.js`: tabs, figure enlargement, and BibTeX copying.
 - `assets/`: paper, figures, and videos.
 
-All three videos autoplay muted and loop, with native controls for sound and pause. The paper is revision 23 (20 pages, 47 references), with a blue globe icon, standard LaTeX magenta project URL, and black Project page label on its first page.
+All three videos autoplay muted and loop, with native controls for sound and pause. The paper is revision 24 (20 pages, 47 references), with a blue globe icon, standard LaTeX magenta project URL, and black Project page label on its first page. Every page header displays the full paper title.
 
 The introduction video is revision 12 (1:38, 1920 × 1080), with consistent z-based latent notation. Its approved narration, subtitles, and timing are unchanged.
