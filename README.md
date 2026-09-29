@@ -21,4 +21,4 @@ Run `python3 -m http.server 4173 --bind 127.0.0.1` from this directory and open 
 - `script.js`: tabs, figure enlargement, and BibTeX copying.
 - `assets/`: paper, figures, and videos.
 
-All three videos autoplay muted and loop, with native controls for sound and pause. The paper is revision 19 (20 pages, 47 references), with a blue globe icon and project-page link on its first page.
+All three videos autoplay muted and loop, with native controls for sound and pause. The paper is revision 20 (20 pages, 47 references), with a blue project URL and black globe icon and label on its first page.
