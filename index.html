@@ -17,7 +17,7 @@
     <h1>Skeleton-Grounded Latent Action Model<br class="title-break"> for Robot World Models</h1>
 <div class="authors"><span>Qi Lv<sup>1,2</sup></span><b>·</b><span>Jiayi Lin<sup>1,3</sup></span><b>·</b><span>Yuxin Jiang<sup>2</sup></span><b>·</b><span>Jianzong Wang<sup>3</sup></span><b>·</b><span>Xiang Deng<sup>1</sup></span><b>·</b><span>Mike Shou Zheng<sup>2,✉</sup></span></div>
 <div class="affiliations"><span><sup>1</sup> HIT (Shenzhen)</span><span><sup>2</sup> Show Lab, NUS</span><span><sup>3</sup> Ping An Tech</span></div>
-    <div class="paper-links"><a class="paper-download" href="assets/SkeLAM.pdf?v=20" target="_blank" rel="noopener">Paper <span>(PDF)</span></a><a href="#video">Video</a><a href="#citation">BibTeX</a></div>
+    <div class="paper-links"><a class="paper-download" href="assets/SkeLAM.pdf?v=21" target="_blank" rel="noopener">Paper <span>(PDF)</span></a><a href="#video">Video</a><a href="#citation">BibTeX</a></div>
     <nav class="contents" aria-label="Page sections"><a href="#abstract">Abstract</a><a href="#overview">Method</a><a href="#results">Results</a><a href="#visuals">Visualizations</a></nav>
   </header>
   <section class="container intro-section" id="video" aria-label="Video introduction">
@@ -46,7 +46,7 @@
     <div class="result-context"><h3>DROID</h3><span>400 clips · 1 observed + 12 future frames · 480 × 640</span></div>
 <div class="table-scroll" tabindex="0" role="region" aria-label="DROID results, scroll horizontally on small screens"><table><caption>DROID · selected visual and motion metrics</caption><thead><tr><th scope="col">Method</th><th scope="col">Control</th><th scope="col">PSNR ↑<small>dB</small></th><th scope="col">SSIM ↑</th><th scope="col">LPIPS ↓</th><th scope="col">ADE ↓<small>pixels</small></th><th scope="col">Direction F1 ↑</th></tr></thead><tbody><tr class="reference"><th scope="row">TesserAct</th><td>Text reference</td><td>15.08</td><td>0.7400</td><td>0.2561</td><td>83.76</td><td>0.2950</td></tr><tr class="reference"><th scope="row">GE-Base</th><td>Text reference</td><td>12.51</td><td>0.4530</td><td>0.5864</td><td>55.30</td><td>0.3006</td></tr><tr class=""><th scope="row">IRASim</th><td>Action embedding</td><td>11.55</td><td>0.4137</td><td>0.5993</td><td>67.11</td><td>0.2616</td></tr><tr class=""><th scope="row">Ctrl-World</th><td>Action embedding</td><td>16.34</td><td>0.5910</td><td>0.4029</td><td>42.96</td><td>0.5888</td></tr><tr class=""><th scope="row">Cosmos-Predict2.5</th><td>Action embedding</td><td>11.51</td><td>0.4209</td><td>0.6018</td><td>60.76</td><td>0.2375</td></tr><tr class=""><th scope="row">Cosmos3</th><td>Action embedding</td><td>16.98</td><td>0.7630</td><td>0.2186</td><td>67.23</td><td>0.3278</td></tr><tr class=""><th scope="row">EnerVerse-AC</th><td>Action map</td><td>14.13</td><td>0.5157</td><td>0.4139</td><td>59.63</td><td>0.2433</td></tr><tr class=""><th scope="row">GE-Sim</th><td>Action map</td><td>12.53</td><td>0.4550</td><td>0.4950</td><td>55.57</td><td>0.2799</td></tr><tr class=""><th scope="row">OSCAR</th><td>Skeleton</td><td>12.57</td><td>0.4471</td><td>0.4788</td><td>43.74</td><td>0.5810</td></tr><tr class=""><th scope="row">DreamDojo†</th><td>Robot action</td><td>18.91</td><td>0.8057</td><td>0.1473</td><td>51.11</td><td>0.4989</td></tr><tr class=""><th scope="row">CD-LAM†</th><td>Action → latent</td><td>18.34</td><td>0.7910</td><td>0.1586</td><td>53.90</td><td>0.4903</td></tr><tr class="ours"><th scope="row">SkeLAM (ours)</th><td>Action → kinematic</td><td>19.35</td><td>0.8340</td><td>0.1310</td><td>41.15</td><td>0.5465</td></tr></tbody></table></div>
 <p class="result-reading"><strong>Compared with DreamDojo:</strong> ADE falls from 51.11 to 41.15 pixels; LPIPS falls from 0.1473 to 0.1310. Lower values indicate closer agreement with the reference.</p>
-<p class="table-note">↑ Higher is better · ↓ Lower is better. Text-conditioned models are visual references. † Large-scale interaction pretraining. Selected metrics are shown here; see the <a href="assets/SkeLAM.pdf?v=20" target="_blank" rel="noopener">paper and appendix ↗</a> for all metrics, coverage, and protocols.</p>
+<p class="table-note">↑ Higher is better · ↓ Lower is better. Text-conditioned models are visual references. † Large-scale interaction pretraining. Selected metrics are shown here; see the <a href="assets/SkeLAM.pdf?v=21" target="_blank" rel="noopener">paper and appendix ↗</a> for all metrics, coverage, and protocols.</p>
   </section>
     <section class="section container" id="visuals">
       <h2>Qualitative Results</h2>
@@ -109,7 +109,7 @@
   </section>
 
 </main>
-<footer class="container"><span>SkeLAM · 2026</span><a href="assets/SkeLAM.pdf?v=20" target="_blank" rel="noopener">Paper PDF</a></footer>
+<footer class="container"><span>SkeLAM · 2026</span><a href="assets/SkeLAM.pdf?v=21" target="_blank" rel="noopener">Paper PDF</a></footer>
 <dialog id="figure-dialog" aria-label="Enlarged research figure"><div class="dialog-toolbar"><p id="dialog-title">Research figure</p><button type="button" id="close-figure" aria-label="Close enlarged figure">Close <span aria-hidden="true">×</span></button></div><div class="dialog-canvas"><img id="dialog-image" alt=""></div><p class="dialog-note">Scroll to inspect the full-resolution figure. Press Esc to close.</p></dialog>
 <script src="script.js" defer></script>
 </body>
