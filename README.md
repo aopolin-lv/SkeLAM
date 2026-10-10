@@ -21,6 +21,6 @@ Run `python3 -m http.server 4173 --bind 127.0.0.1` from this directory and open 
 - `script.js`: tabs, figure enlargement, and BibTeX copying.
 - `assets/`: paper, figures, and videos.
 
-All three videos autoplay muted and loop, with native controls for sound and pause. The paper is revision 26 (20 pages, 47 references), with a blue globe icon, standard LaTeX magenta project URL, and black Project page label on its first page. Every page header displays the full paper title. Author names in the PDF are separated with LaTeX \qquad spacing.
+All three videos autoplay muted and loop, with native controls for sound and pause. The paper is revision 30 (20 pages, 54 references), with a blue globe icon, standard LaTeX magenta project URL, and black Project page label on its first page. Every page header displays the full paper title. Author names in the PDF are separated with LaTeX \qquad spacing. Related Work distinguishes SkeleWAM and Skel-WAM from SkeLAM and includes MoCa and MOJITO, plus a brief contextual sentence citing OSEF, DART, and CE-Agent. DART retains the author-supplied NLPCC 2026 “Accepted, to appear” status.
 
 The introduction video is revision 12 (1:38, 1920 × 1080), with consistent z-based latent notation. Its approved narration, subtitles, and timing are unchanged.
